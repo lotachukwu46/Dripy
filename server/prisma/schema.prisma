@@ -1,0 +1,192 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  password      String
+  username      String
+  avatarUrl     String?
+
+  role          Role          @default(USER)
+  status        AccountStatus @default(ACTIVE)
+
+  // Referral system
+  referralCode   String   @unique
+  referredById   String?
+  referredUsers  User[]   @relation("Referrals")
+  referrer       User?    @relation("Referrals", fields: [referredById], references: [id])
+
+  // Account state
+  isVerified    Boolean  @default(false)
+  lastLogin     DateTime?
+  refreshToken  String?
+
+  // Gamification / Virtual currency
+  nc            Int      @default(0)      // Naira Coins, in-app currency
+  level         Int      @default(1)
+  league        League   @default(BRONZE)
+  streak        Int      @default(0)
+  badges        Json?
+  leaderboardRank Int?
+
+  // Real money earnings (calculated from NC, not stored)
+  totalEarnings Decimal  @default(0)      // lifetime cash earned
+  totalNC       Int      @default(0)      // lifetime NC earned
+
+  // Security & reset
+  verificationToken      String?
+  verificationTokenExpiry DateTime?
+  resetPasswordToken     String?
+  resetPasswordExpires   DateTime?
+  twoFactorEnabled       Boolean  @default(false)
+  twoFactorSecret        String?
+
+  // Activity tracking
+  ipAddress    String?
+  userAgent    String?
+
+  // Relations
+  tasks        UserTask[]
+  withdrawals  Withdrawal[]
+  walletHistory WalletHistory[]
+  redemptions  Redemption[]  // 🔹 NC → reward redemptions
+
+  // Meta
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  failedLoginAttempts  Int      @default(0)
+  lockUntil            DateTime?         // temporarily locked until this time
+
+  @@index([email])
+  @@index([referralCode])
+  @@index([status])
+  @@index([league, nc])
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum AccountStatus {
+  ACTIVE
+  SUSPENDED
+  BANNED
+}
+
+enum League {
+  BRONZE
+  SILVER
+  GOLD
+  PLATINUM
+}
+
+model Task {
+  id          String     @id @default(cuid())
+  title       String
+  description String
+  rewardNC    Int         @default(0)   // reward in Naira Coins
+  rewardCash  Decimal?                 // optional: cash-paying task
+  type        TaskType
+  proofUrl    String?
+  status      TaskStatus  @default(ACTIVE)
+
+  completedBy UserTask[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum TaskType {
+  CPA
+  CPC
+  SURVEY
+  AD_VIEW
+}
+
+enum TaskStatus {
+  ACTIVE
+  EXPIRED
+  PAUSED
+}
+
+model UserTask {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  task      Task     @relation(fields: [taskId], references: [id])
+  taskId    String
+  status    UserTaskStatus @default(PENDING)
+  createdAt DateTime @default(now())
+}
+
+enum UserTaskStatus {
+  PENDING
+  COMPLETED
+  APPROVED
+}
+
+model Withdrawal {
+  id        String          @id @default(cuid())
+  amount    Decimal
+  status    WithdrawalStatus @default(PENDING)
+  user      User            @relation(fields: [userId], references: [id])
+  userId    String
+  createdAt DateTime        @default(now())
+}
+
+enum WithdrawalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  PAID
+}
+
+model WalletHistory {
+  id          String   @id @default(cuid())
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String
+  amount      Decimal
+  type        WalletType
+  description String
+  createdAt   DateTime @default(now())
+}
+
+enum WalletType {
+  CREDIT
+  DEBIT
+}
+
+model Redemption {
+  id          String       @id @default(cuid())
+  user        User         @relation(fields: [userId], references: [id])
+  userId      String
+  rewardType  RewardType
+  rewardValue String       // e.g. "₦500 Airtime", "₦1000 Gift Card"
+  ncSpent     Int          // Naira Coins spent
+  status      RedemptionStatus @default(PENDING)
+  createdAt   DateTime @default(now())
+}
+
+enum RewardType {
+  CASH
+  AIRTIME
+  DATA
+  GIFT_CARD
+}
+
+enum RedemptionStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  DELIVERED
+}

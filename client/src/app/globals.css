@@ -1,0 +1,64 @@
+@import "tailwindcss";
+
+/* 1. Define your default (base) theme variables */
+@theme {
+  /* These are your global, non-league-specific design tokens */
+  --color-background: var(--color-base-white);
+  --color-foreground: var(--color-base-gray-900);
+  --color-primary: var(--color-base-blue-600);
+  --color-primary-foreground: var(--color-base-white);
+
+  /* Your base color palette (shared across all themes) */
+  --color-base-white: oklch(1 0 0);
+  --color-base-black: oklch(0 0 0);
+  --color-base-gray-50: oklch(0.984 0.003 247.858);
+  --color-base-gray-100: oklch(0.968 0.007 247.896);
+  /* ... add all your base gray, red, blue, etc., colors ... */
+  --color-base-blue-600: oklch(0.589 0.207 259.733);
+}
+
+/* 2. Define the specific theme for each league using data attributes */
+@layer base {
+  /* BRONZE LEAGUE THEME */
+  [data-theme="bronze"] {
+    --color-primary: var(--color-base-orange-600);
+    --color-primary-foreground: var(--color-base-white);
+    --color-accent: var(--color-base-amber-300);
+  }
+
+  /* SILVER LEAGUE THEME */
+  [data-theme="silver"] {
+    --color-primary: var(--color-base-gray-400);
+    --color-primary-foreground: var(--color-base-gray-900);
+    --color-accent: var(--color-base-blue-200);
+  }
+
+  /* GOLD LEAGUE THEME */
+  [data-theme="gold"] {
+    --color-primary: var(--color-base-amber-500);
+    --color-primary-foreground: var(--color-base-gray-900);
+    --color-accent: var(--color-base-amber-100);
+  }
+
+  /* DIAMOND LEAGUE THEME */
+  [data-theme="diamond"] {
+    --color-primary: var(--color-base-cyan-500);
+    --color-primary-foreground: var(--color-base-gray-900);
+    --color-accent: var(--color-base-cyan-100);
+  }
+
+  /* PLATINUM LEAGUE THEME */
+  [data-theme="platinum"] {
+    --color-primary: var(--color-base-violet-600);
+    --color-primary-foreground: var(--color-base-white);
+    --color-accent: var(--color-base-violet-200);
+  }
+}
+
+/* 3. Apply the base styles using your CSS variables */
+@layer base {
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+  }
+}
