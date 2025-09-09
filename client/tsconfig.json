@@ -29,6 +29,6 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "src/app/layout.tsx"
-  ],
+, "src/app/(public)/landing/page.jsx"  ],
   "exclude": ["node_modules"]
 }
