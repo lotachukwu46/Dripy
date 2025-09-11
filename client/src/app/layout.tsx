@@ -1,6 +1,8 @@
+// app/layout.tsx
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
+import SmoothScrollProvider from "./smooth-scroll-provider"; // import the provider
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,9 +18,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      {/* The ThemeProvider will add the data-theme attribute here */}
       <body className={inter.className}>
-        <Providers>{children}</Providers>
+        <Providers>
+          <SmoothScrollProvider>{children}</SmoothScrollProvider>
+        </Providers>
       </body>
     </html>
   );

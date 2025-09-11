@@ -1,53 +1,63 @@
 @import "tailwindcss";
 
-/* 1. Define your default (base) theme variables */
+/* 1. Base Design Tokens (default theme variables) */
 @theme {
-  /* These are your global, non-league-specific design tokens */
+  /* Neutral colors */
   --color-background: var(--color-base-white);
   --color-foreground: var(--color-base-gray-900);
+
+  /* Primary brand */
   --color-primary: var(--color-base-blue-600);
   --color-primary-foreground: var(--color-base-white);
 
-  /* Your base color palette (shared across all themes) */
+  /* Palette foundation */
   --color-base-white: oklch(1 0 0);
   --color-base-black: oklch(0 0 0);
   --color-base-gray-50: oklch(0.984 0.003 247.858);
   --color-base-gray-100: oklch(0.968 0.007 247.896);
-  /* ... add all your base gray, red, blue, etc., colors ... */
+  --color-base-gray-400: oklch(0.7 0.015 247.896);
+  --color-base-gray-900: oklch(0.2 0.015 247.896);
+
+  --color-base-blue-200: oklch(0.85 0.1 259.733);
   --color-base-blue-600: oklch(0.589 0.207 259.733);
+
+  --color-base-amber-100: oklch(0.95 0.12 90);
+  --color-base-amber-300: oklch(0.85 0.18 90);
+  --color-base-amber-500: oklch(0.75 0.2 90);
+
+  --color-base-orange-600: oklch(0.68 0.2 45);
+  --color-base-cyan-100: oklch(0.9 0.1 200);
+  --color-base-cyan-500: oklch(0.68 0.15 200);
+  --color-base-violet-200: oklch(0.88 0.12 290);
+  --color-base-violet-600: oklch(0.6 0.22 290);
 }
 
-/* 2. Define the specific theme for each league using data attributes */
+/* 2. League Themes (data attributes = lightweight theming) */
 @layer base {
-  /* BRONZE LEAGUE THEME */
   [data-theme="bronze"] {
     --color-primary: var(--color-base-orange-600);
     --color-primary-foreground: var(--color-base-white);
     --color-accent: var(--color-base-amber-300);
   }
 
-  /* SILVER LEAGUE THEME */
   [data-theme="silver"] {
     --color-primary: var(--color-base-gray-400);
     --color-primary-foreground: var(--color-base-gray-900);
     --color-accent: var(--color-base-blue-200);
   }
 
-  /* GOLD LEAGUE THEME */
   [data-theme="gold"] {
     --color-primary: var(--color-base-amber-500);
     --color-primary-foreground: var(--color-base-gray-900);
     --color-accent: var(--color-base-amber-100);
   }
 
-  /* DIAMOND LEAGUE THEME */
   [data-theme="diamond"] {
     --color-primary: var(--color-base-cyan-500);
     --color-primary-foreground: var(--color-base-gray-900);
     --color-accent: var(--color-base-cyan-100);
   }
 
-  /* PLATINUM LEAGUE THEME */
   [data-theme="platinum"] {
     --color-primary: var(--color-base-violet-600);
     --color-primary-foreground: var(--color-base-white);
@@ -55,10 +65,72 @@
   }
 }
 
-/* 3. Apply the base styles using your CSS variables */
+/* 3. Base resets and typography */
 @layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
+    font-feature-settings: "liga", "kern";
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
   }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  html,
+  body {
+    overscroll-behavior: none;
+  }
+}
+
+/* 4. Scrollbar (theme-aware + modern) */
+@layer base {
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: color-mix(in srgb, var(--color-background) 20%, transparent);
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-primary);
+    border-radius: 10px;
+    border: 2px solid
+      color-mix(in srgb, var(--color-background) 20%, transparent);
+    transition: background 0.2s ease;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: color-mix(in srgb, var(--color-primary) 80%, black);
+  }
+
+  /* Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-primary)
+      color-mix(in srgb, var(--color-background) 20%, transparent);
+  }
+}
+
+/* 5. Scroll behavior utilities */
+.scroll-smooth {
+  scroll-behavior: smooth;
+}
+.scroll-auto {
+  scroll-behavior: auto;
 }
