@@ -107,7 +107,7 @@ export default function About() {
             Revolutionizing Online Earnings
           </h2>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            Drippy transforms how Africa earns online by turning tasks into
+            Dripy transforms how Africa earns online by turning tasks into
             thrilling challenges and rewards into real achievements.
           </p>
         </motion.div>
@@ -221,7 +221,7 @@ export default function About() {
         <div className="mt-12">
           <p className="text-gray-500 text-sm">
             Trusted by students, freelancers, and side-hustlers across Nigeria,
-            Kenya, Ghana, and South Africa
+            Kenya, Ghana, and Afirca at large
           </p>
         </div>
       </div>
