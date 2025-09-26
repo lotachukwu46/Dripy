@@ -73,7 +73,7 @@ export default function LoginPage() {
       </button>
 
       <div className="text-center">
-        <Link href="/register" className="text-blue-600 hover:text-blue-500">
+        <Link href="/" className="text-blue-600 hover:text-blue-500">
           Create an account
         </Link>
       </div>
