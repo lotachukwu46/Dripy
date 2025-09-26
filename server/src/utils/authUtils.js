@@ -51,3 +51,10 @@ export const generateVerificationCode = (length = 6) => {
   }
   return code;
 };
+
+// Password must contain: min 8 chars, uppercase, lowercase, number, special char
+export const validateStrongPassword = (password) => {
+  const regex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&()[\]{}<>^#_+=~])[A-Za-z\d@$!%*?&()[\]{}<>^#_+=~]{8,}$/;
+  return regex.test(password);
+};

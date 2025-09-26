@@ -28,4 +28,10 @@ router.get("/stats", authenticate, authorize("ADMIN"), getUserStats); // Example
 router.get("/:id", authenticate, getUserById); // Get single user by ID
 router.patch("/", authenticate, updateUser); // User updates own profile
 
+// Leaderboard
+router.get("/leaderboard", authenticate, getLeaderboard);
+
+// Referral report
+router.get("/referrals/:id", authenticate, getReferralReport);
+
 export default router;

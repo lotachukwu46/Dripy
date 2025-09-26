@@ -38,7 +38,10 @@ const router = express.Router();
  *         application/json:
  *           schema:
  *             type: object
- *             required: [email, password, username]
+ *             required:
+ *               - email
+ *               - password
+ *               - username
  *             properties:
  *               email:
  *                 type: string
@@ -52,7 +55,7 @@ const router = express.Router();
  *       400:
  *         description: Invalid input
  *       500:
- *        description: Server error
+ *         description: Server error
  */
 router.post("/register", registerLimiter, register);
 
@@ -68,7 +71,9 @@ router.post("/register", registerLimiter, register);
  *         application/json:
  *           schema:
  *             type: object
- *            required: [email, token]
+ *             required:
+ *               - email
+ *               - token
  *             properties:
  *               token:
  *                 type: string
@@ -97,7 +102,9 @@ router.post("/verify-email", verifyEmailLimiter, verifyEmail);
  *         application/json:
  *           schema:
  *             type: object
- *             required: [email, password]
+ *             required:
+ *               - email
+ *               - password
  *             properties:
  *               email:
  *                 type: string
@@ -161,7 +168,8 @@ router.get("/profile", authenticate, getMe);
  *         application/json:
  *           schema:
  *             type: object
- *             required: [email]
+ *             required:
+ *               - email
  *             properties:
  *               email:
  *                 type: string
@@ -183,7 +191,9 @@ router.post("/forgot-password", forgotPassword);
  *         application/json:
  *           schema:
  *             type: object
- *             required: [token, newPassword]
+ *             required:
+ *               - token
+ *               - newPassword
  *             properties:
  *               token:
  *                 type: string
@@ -209,7 +219,9 @@ router.post("/reset-password", resetPassword);
  *         application/json:
  *           schema:
  *             type: object
- *             required: [oldPassword, newPassword]
+ *             required:
+ *               - oldPassword
+ *               - newPassword
  *             properties:
  *               oldPassword:
  *                 type: string
