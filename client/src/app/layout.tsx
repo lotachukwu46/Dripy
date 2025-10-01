@@ -1,8 +1,9 @@
 // app/layout.tsx
 import { Inter } from "next/font/google";
+import { Toaster } from "react-hot-toast";
+import AuthInitializer from "./components/dashboard/AuthInitializer";
 import "./globals.css";
-import { Providers } from "./providers";
-import SmoothScrollProvider from "./smooth-scroll-provider"; // import the provider
+import SmoothScrollProvider from "./smooth-scroll-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,9 +20,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <Providers>
-          <SmoothScrollProvider>{children}</SmoothScrollProvider>
-        </Providers>
+        <SmoothScrollProvider>
+          <AuthInitializer />
+          {children}
+          <Toaster position="top-right" />
+        </SmoothScrollProvider>
       </body>
     </html>
   );

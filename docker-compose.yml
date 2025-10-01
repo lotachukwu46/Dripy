@@ -1,13 +1,12 @@
-version: '3.8'
 services:
   postgres:
     image: postgres:15
-    container_name: naira_works_postgres
+    container_name: dripy_postgres
     restart: always
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: naira_works_db
+      POSTGRES_DB: dripy_db
     ports:
       - "5432:5432"
     volumes:

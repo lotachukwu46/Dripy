@@ -1,5 +1,61 @@
 import prisma from "../prismaClient.js";
 
+export const getAllUsers = async (req, res) => {
+  try {
+    let {
+      page = 1,
+      limit = 20,
+      sortBy = "createdAt",
+      order = "desc",
+    } = req.query;
+    page = Math.max(parseInt(page), 1);
+    limit = Math.min(parseInt(limit), 100); // max 100
+
+    if (
+      !["createdAt", "username", "nc", "usdBalance", "level"].includes(sortBy)
+    ) {
+      sortBy = "createdAt";
+    }
+    if (!["asc", "desc"].includes(order)) order = "desc";
+
+    const users = await prisma.user.findMany({
+      skip: (page - 1) * limit,
+      take: limit,
+      orderBy: { [sortBy]: order },
+      select: {
+        id: true,
+        email: true,
+        username: true,
+        avatarUrl: true,
+        role: true,
+        status: true,
+        isVerified: true,
+        nc: true,
+        usdBalance: true,
+        level: true,
+        league: true,
+        streak: true,
+        leaderboardRank: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
+
+    const totalUsers = await prisma.user.count();
+
+    res.json({
+      page,
+      limit,
+      totalPages: Math.ceil(totalUsers / limit),
+      totalUsers,
+      users,
+    });
+  } catch (err) {
+    console.error("Get all users error:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 // ---------------- GET SINGLE USER ----------------
 export const getUserById = async (req, res) => {
   try {

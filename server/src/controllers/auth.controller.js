@@ -13,11 +13,7 @@ import {
   forgotPasswordTemplate,
   verifyEmailTemplate,
 } from "../utils/emailTemplates/index.js";
-import {
-  validateEmail,
-  validatePassword,
-  validateUsername,
-} from "../utils/validators.js";
+import { validateEmail, validateUsername } from "../utils/validators.js";
 
 // ------------------ HELPERS ------------------
 function isLocked(user) {
@@ -48,8 +44,6 @@ export const register = async (req, res) => {
       return res.status(400).json({ error: "Invalid email" });
     if (!validateUsername(username))
       return res.status(400).json({ error: "Invalid username" });
-    if (!validatePassword(password))
-      return res.status(400).json({ error: "Invalid password" });
     if (!validateStrongPassword(password))
       return res.status(400).json({
         error:

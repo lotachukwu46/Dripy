@@ -20,6 +20,7 @@ app.use(
     origin: config.cors.origin,
     methods: config.cors.methods,
     allowedHeaders: config.cors.allowedHeaders,
+    credentials: true,
   })
 );
 app.use(express.json());

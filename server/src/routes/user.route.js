@@ -3,6 +3,8 @@ import express from "express";
 import {
   deleteUser,
   getAllUsers,
+  getLeaderboard,
+  getReferralReport,
   getUserById,
   getUserStats,
   updateUser,
